@@ -2,9 +2,10 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 import sys
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 import httpx
@@ -26,6 +27,10 @@ from mkt.schedule import (
 )
 
 POSTS, OUT, PLAN, STATE = ROOT / "content" / "posts.json", ROOT / "out", ROOT / "plan.json", ROOT / "state.json"
+TOKEN_DAYS = 60                       # durata dei token Instagram Login generati nella dashboard Meta
+REFRESH_EVERY = timedelta(days=7)     # rinnovo automatico del token
+WARN_BEFORE = timedelta(days=7)       # avviso prima della scadenza
+ALERT_EVERY = timedelta(hours=24)     # lo stesso problema genera al massimo un avviso (email di GitHub) al giorno
 
 
 def image_urls(base: str, post: Post) -> list[str]:
@@ -45,6 +50,81 @@ def check_media(client: httpx.Client, url: str) -> None:
 
 
 check_image = check_media  # nome storico
+
+
+def media_base() -> str:
+    """Indirizzo pubblico di post e storie: MEDIA_BASE_URL oppure, su GitHub, il sito Pages del repository."""
+    value = os.environ.get("MEDIA_BASE_URL", "").strip().rstrip("/")
+    if value:
+        return value
+    owner, _, name = os.environ.get("GITHUB_REPOSITORY", "").partition("/")
+    if owner and name:
+        host = f"{owner.lower()}.github.io"
+        return f"https://{host}" if name.lower() == host else f"https://{host}/{name}"
+    raise RuntimeError("MEDIA_BASE_URL non impostato (indirizzo pubblico delle immagini)")
+
+
+def fingerprint(token: str) -> str:
+    """Impronta non reversibile del token: serve solo a capire se è stato sostituito (il token non viene mai salvato)."""
+    return hashlib.sha256(token.encode()).hexdigest()[:12]
+
+
+def maintain_token(ig: Instagram, state: dict[str, dict[str, str]], now: datetime) -> list[str]:
+    """Rinnova ogni settimana il token Instagram Login (così non scade) e avvisa 7 giorni prima di una scadenza."""
+    fp, info = fingerprint(ig.token), dict(state.get("_token", {}))
+    if info.get("fp") != fp:  # primo avvio o token sostituito
+        expires = (now + timedelta(days=TOKEN_DAYS)).isoformat() if ig.instagram_login else ""
+        info = {"fp": fp, "seen": now.isoformat(), "expires": expires, "refreshed": ""}
+    problems: list[str] = []
+    if ig.instagram_login and now >= datetime.fromisoformat(info["refreshed"] or info["seen"]) + REFRESH_EVERY:
+        try:
+            new, expires_in = ig.refresh_token()
+        except InstagramError as e:
+            problems.append(f"rinnovo automatico del token non riuscito: {e}")
+        else:
+            info["refreshed"] = now.isoformat()
+            if new == ig.token:
+                info["expires"] = (now + timedelta(seconds=expires_in or TOKEN_DAYS * 86400)).isoformat()
+            else:
+                problems.append("Meta ha restituito un token diverso: genera un token nuovo nella dashboard Meta "
+                                "e aggiorna il segreto IG_ACCESS_TOKEN")
+    if info["expires"] and datetime.fromisoformat(info["expires"]) - now < WARN_BEFORE:
+        problems.append(f"il token Instagram scade il {datetime.fromisoformat(info['expires']):%d/%m/%Y}: generane uno "
+                        "nuovo nella dashboard Meta e aggiorna il segreto IG_ACCESS_TOKEN")
+    state["_token"] = info
+    return problems
+
+
+def notify(state: dict[str, dict[str, str]], problems: list[str], now: datetime) -> int:
+    """Segnala i problemi facendo fallire il job (GitHub manda un'email), al massimo una volta al giorno per problema."""
+    if not problems:
+        state.pop("_alert", None)
+        return 0
+    for p in problems:
+        print(f"PROBLEMA: {p}")
+    summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if summary:
+        with open(summary, "a", encoding="utf-8") as f:
+            f.write("".join(f"- {p}\n" for p in problems))
+    key = hashlib.sha256("|".join(problems).encode()).hexdigest()[:12]
+    last = state.get("_alert", {})
+    if last.get("key") == key and now - datetime.fromisoformat(last["at"]) < ALERT_EVERY:
+        print("(già segnalato nelle ultime 24 ore: nessuna nuova email)")
+        return 0
+    state["_alert"] = {"key": key, "at": now.isoformat()}
+    return 1
+
+
+def verify(ig: Instagram, http: httpx.Client, base: str, cfg: Config) -> str:
+    """Controllo completo SENZA pubblicare: account, quota, immagini online e permesso di pubblicazione."""
+    uid, name = ig.account()
+    used, total = ig.quota_used()
+    first = load_posts(POSTS, cfg.language)[0]
+    urls = [media_urls(base, first, kind)[0] for kind in ("post", "story")]
+    for u in urls:
+        check_media(http, u)
+    ig.probe(urls[0])
+    return f"account @{name} (ID {uid}), pubblicazioni usate oggi {used}/{total}"
 
 
 def ensure_plan(cfg: Config, today: date | None = None) -> list[Slot]:
@@ -112,53 +192,85 @@ def cmd_status(cfg: Config) -> int:
 
 
 def cmd_publish(cfg: Config, live: bool) -> int:
+    token = os.environ.get("IG_ACCESS_TOKEN", "").strip()
+    if not live:
+        return _simulate(cfg)
+    if not token:
+        print("Configurazione incompleta: manca il segreto IG_ACCESS_TOKEN. Nessuna azione.")
+        return 0
+    state, now, problems = load_state(STATE), datetime.now(UTC), []
+    try:
+        with httpx.Client() as http:
+            ig = Instagram(http, os.environ.get("IG_USER_ID", "").strip(), token, cfg.graph_version)
+            problems += maintain_token(ig, state, now)
+            base = media_base()
+            if not PLAN.is_file():  # primo avvio: il calendario parte solo se la configurazione funziona davvero
+                print(f"Primo avvio, verifica riuscita: {verify(ig, http, base, cfg)}. Creo il calendario.")
+            problems += _publish_due(cfg, ig, http, base, state, now)
+    except (InstagramError, RuntimeError) as e:
+        problems.append(str(e))
+    code = notify(state, problems, now)
+    save_state(STATE, state)
+    return code
+
+
+def _publish_due(cfg: Config, ig: Instagram, http: httpx.Client, base: str, state: dict[str, dict[str, str]],
+                 now: datetime) -> list[str]:
     plan = ensure_plan(cfg)
     posts = {p.id: p for p in load_posts(POSTS, cfg.language)}
-    state, now = load_state(STATE), datetime.now(UTC)
     slot, skipped = next_due(plan, state, now, cfg.max_late_hours)
     for s in skipped:
         state[s.key] = {"at": now.isoformat(), "skipped": "troppo in ritardo"}
-    if skipped and live:
-        save_state(STATE, state)
+    if slot is None:
+        print("Niente da pubblicare adesso.")
+        return []
+    post = posts[slot.id]
+    if issues := lint(post):
+        state[slot.key] = {"at": now.isoformat(), "skipped": "non conforme"}
+        return [f"{post.id} NON pubblicato, problemi di conformità: {'; '.join(issues)}"]
+    urls = media_urls(base, post, slot.kind)
+    for u in urls:
+        check_media(http, u)
+    used, total = ig.quota_used()
+    if used >= total * 0.8:
+        print(f"Limite giornaliero quasi raggiunto ({used}/{total}): riprovo più tardi.")
+        return []
+    media = ig.publish_post(urls, post.full_caption()) if slot.kind == "post" else ig.publish_story(urls[0])
+    state[slot.key] = {"at": now.isoformat(), "media_id": media}
+    try:
+        link = ig.permalink(media)
+    except InstagramError:
+        link = None
+    print(f"Pubblicato {slot.kind} {post.id}: {link or media}")
+    return []
+
+
+def _simulate(cfg: Config) -> int:
+    """Senza --live: mostra cosa uscirebbe adesso, senza rete e senza pubblicare."""
+    plan = ensure_plan(cfg)
+    posts = {p.id: p for p in load_posts(POSTS, cfg.language)}
+    slot, _ = next_due(plan, load_state(STATE), datetime.now(UTC), cfg.max_late_hours)
     if slot is None:
         print("Niente da pubblicare adesso.")
         return 0
     post = posts[slot.id]
     if issues := lint(post):
-        print(f"{post.id} NON pubblicato, problemi di conformità: {'; '.join(issues)}")
+        print(f"{post.id} NON pubblicabile, problemi di conformità: {'; '.join(issues)}")
         return 1
-    urls = media_urls(secret("MEDIA_BASE_URL"), post, slot.kind)
-    if not live:
-        print(f"[simulazione] pubblicherei {slot.kind} {post.id} ({len(urls)} file) previsto per {slot.when:%d/%m %H:%M}")
-        print(post.full_caption())
-        return 0
-    with httpx.Client() as http:
-        for u in urls:
-            check_media(http, u)
-        ig = Instagram(http, secret("IG_USER_ID"), secret("IG_ACCESS_TOKEN"), cfg.graph_version)
-        used, total = ig.quota_used()
-        if used >= total * 0.8:
-            print(f"Limite giornaliero quasi raggiunto ({used}/{total}): riprovo più tardi.")
-            return 0
-        media = (ig.publish_post(urls, post.full_caption()) if slot.kind == "post"
-                 else ig.publish_story(urls[0]))
-        state[slot.key] = {"at": now.isoformat(), "media_id": media}
-        save_state(STATE, state)
-        print(f"Pubblicato {slot.kind} {post.id}: {ig.permalink(media) or media}")
+    urls = media_urls(media_base(), post, slot.kind)
+    print(f"[simulazione] pubblicherei {slot.kind} {post.id} ({len(urls)} file) previsto per {slot.when:%d/%m %H:%M}")
+    print(post.full_caption())
     return 0
 
 
 def cmd_check(cfg: Config) -> int:
-    """Verifica che token e account funzionino e che le immagini siano raggiungibili: non pubblica nulla."""
-    base = secret("MEDIA_BASE_URL")
+    """Verifica completa senza pubblicare nulla: token, account, quota, immagini online e permesso di pubblicazione."""
+    token = secret("IG_ACCESS_TOKEN")
     with httpx.Client() as http:
-        ig = Instagram(http, secret("IG_USER_ID"), secret("IG_ACCESS_TOKEN"), cfg.graph_version)
-        used, total = ig.quota_used()
-        print(f"Account Instagram: @{ig.whoami()} · pubblicazioni usate oggi: {used}/{total}")
-        first = load_posts(POSTS, cfg.language)[0]
-        for kind in ('post', 'story'):
-            check_media(http, media_urls(base, first, kind)[0])
-        print("Post e storie sono raggiungibili da internet: tutto pronto.")
+        ig = Instagram(http, os.environ.get("IG_USER_ID", "").strip(), token, cfg.graph_version)
+        kind = "Instagram Login" if ig.instagram_login else "Pagina Facebook"
+        print(f"Token {kind}: {verify(ig, http, media_base(), cfg)}")
+    print("Tutto pronto: post e storie usciranno da soli secondo il calendario.")
     return 0
 
 
