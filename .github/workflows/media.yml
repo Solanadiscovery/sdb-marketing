@@ -3,7 +3,7 @@ name: Crea e pubblica i file multimediali
 on:
   push:
     branches: [main]
-    paths: ["content/**", "assets/**", "mkt/**", "config.toml", ".github/workflows/media.yml"]
+    paths: ["content/**", "assets/**", "mkt/**", "config.toml", "legal/**", ".github/workflows/media.yml"]
   workflow_dispatch: {}
 permissions:
   contents: read
@@ -24,6 +24,8 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python -m mkt lint
       - run: python -m mkt render
+      - name: Copia le pagine legali (privacy, cancellazione dati)
+        run: cp legal/*.html out/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out
