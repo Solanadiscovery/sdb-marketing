@@ -8,7 +8,7 @@
         "slides": [
           {"h": "Ogni minuto nascono nuovi token", "b": "Su Solana si creano centinaia di pool al giorno. Controllarle a mano è impossibile."},
           {"h": "Il bot le scopre per te", "b": "Segue i principali DEX e analizza i token nuovi con dati on-chain e di mercato."},
-          {"h": "Controlla i rischi principali", "b": "Autorità del mint, concentrazione dei holder, liquidità e prova di vendita."},
+          {"h": "Controlla i rischi principali", "b": "Autorità del mint, concentrazione degli holder, liquidità e prova di vendita."},
           {"h": "Un punteggio da 0 a 100", "b": "Riassume l'analisi in un numero chiaro, con tutte le ragioni a vista."},
           {"h": "Solo informazione", "b": "Non compra, non vende, non tocca i tuoi fondi. Decidi sempre tu."}
         ],
@@ -41,7 +41,7 @@
           {"h": "4. Liquidità sottile o non bloccata", "b": "Poca liquidità significa prezzi instabili. Se non è bloccata può essere ritirata."},
           {"h": "5. Vendere non è possibile", "b": "Alcuni token si comprano ma non si rivendono. Una prova di vendita lo verifica."}
         ],
-        "caption": "5 segnali che Solana DEX Discovery controlla per ogni token nuovo: mint authority, freeze authority, concentrazione dei holder, liquidità e vendibilità.\n\nNessun controllo garantisce che un token sia sicuro, ma conoscere i segnali di allarme aiuta a non partire alla cieca.\n\nSalva il post per averlo sempre a portata di mano.",
+        "caption": "5 segnali che Solana DEX Discovery controlla per ogni token nuovo: mint authority, freeze authority, concentrazione degli holder, liquidità e vendibilità.\n\nNessun controllo garantisce che un token sia sicuro, ma conoscere i segnali di allarme aiuta a non partire alla cieca.\n\nSalva il post per averlo sempre a portata di mano.",
         "hashtags": ["#solana", "#crypto", "#rugpull", "#defi", "#educazionefinanziaria"]
       },
       "en": {
@@ -91,13 +91,13 @@
       "id": "p04-holder",
       "it": {
         "title": "Chi possiede davvero il token?",
-        "sub": "La concentrazione dei holder",
+        "sub": "La concentrazione degli holder",
         "slides": [
           {"h": "Il numero che conta", "b": "Quanta parte dell'offerta è nei primi 10 wallet? Più è alta, più il prezzo dipende da pochi."},
           {"h": "Non tutti sono holder veri", "b": "Le pool di liquidità, i contratti dei DEX e gli indirizzi di burn non sono persone: vanno esclusi dal conto."},
           {"h": "Il nostro metodo", "b": "Il bot esclude questi indirizzi e calcola la concentrazione solo sui wallet reali."},
           {"h": "Un solo wallet dominante", "b": "Se un singolo wallet detiene una quota molto alta, il rischio di vendita improvvisa è maggiore."},
-          {"h": "Dato mancante = prudenza", "b": "Se non riusciamo a leggere i holder, lo segnaliamo: mai trattato come sicuro."}
+          {"h": "Dato mancante = prudenza", "b": "Se non riusciamo a leggere gli holder, lo segnaliamo: mai trattato come sicuro."}
         ],
         "caption": "Guardare solo il prezzo non basta: conta anche chi possiede il token. Il bot calcola la concentrazione dei primi holder escludendo pool, contratti e indirizzi di burn.\n\nSe un dato manca, lo diciamo chiaramente invece di far finta che vada tutto bene.",
         "hashtags": ["#solana", "#crypto", "#holder", "#onchain", "#defi"]
@@ -181,7 +181,7 @@
         "sub": "Il confronto continuo",
         "slides": [
           {"h": "I primi minuti ingannano", "b": "Subito dopo la nascita di una pool i dati sono confusi e molti token spariscono in fretta."},
-          {"h": "Aspettiamo qualche minuto", "b": "L'analisi parte dopo circa 20 minuti, quando i dati sono più chiari ma il token è ancora giovane."},
+          {"h": "Aspettiamo qualche minuto", "b": "L'analisi parte dopo almeno 3 minuti, quando i primi dati si assestano ma il token è ancora giovanissimo."},
           {"h": "I migliori vengono messi da parte", "b": "I token con un buon punteggio entrano in una lista di osservazione."},
           {"h": "Confronto continuo", "b": "Ogni nuovo arrivato viene confrontato con quelli già in lista: restano solo i migliori."},
           {"h": "Esce solo il migliore", "b": "Prima di ogni segnale il token viene analizzato di nuovo con dati aggiornati."}
@@ -194,7 +194,7 @@
         "sub": "Continuous comparison",
         "slides": [
           {"h": "The first minutes are misleading", "b": "Right after a pool is born the data is noisy and many tokens vanish quickly."},
-          {"h": "We wait a few minutes", "b": "Analysis starts after about 20 minutes, when data is clearer but the token is still young."},
+          {"h": "We wait a few minutes", "b": "Analysis starts after at least 3 minutes, when the first data settles but the token is still very young."},
           {"h": "The best are set aside", "b": "Tokens with a good score enter a watchlist."},
           {"h": "Continuous comparison", "b": "Every newcomer is compared with those already on the list: only the best stay."},
           {"h": "Only the best goes out", "b": "Before each signal the token is analyzed again with fresh data."}
@@ -238,7 +238,7 @@
         "title": "Descrizione e whitepaper: contano?",
         "sub": "Il progetto dietro il token",
         "slides": [
-          {"h": "Chi spiega cosa fa, si espone", "b": "Un progetto che dichiara descrizione e whitepaper dà almeno qualcosa da verificare."},
+          {"h": "Chi spiega cosa fa si espone", "b": "Un progetto che dichiara descrizione e whitepaper dà almeno qualcosa da verificare."},
           {"h": "Nel punteggio", "b": "Il bot dà un piccolo vantaggio ai token che dichiarano descrizione o whitepaper."},
           {"h": "Ma non basta", "b": "Chiunque può scrivere un testo. Descrizione e whitepaper sono dichiarati, non verificati."},
           {"h": "Link ufficiali in chiaro", "b": "Nelle schede mostriamo sito, canali e whitepaper dichiarati, così li controlli da solo."},
@@ -251,7 +251,7 @@
         "title": "Description and whitepaper: do they matter?",
         "sub": "The project behind the token",
         "slides": [
-          {"h": "Explaining what you do exposes you", "b": "A project that declares a description and whitepaper gives you at least something to verify."},
+          {"h": "Transparency can be checked", "b": "A project that declares a description and whitepaper gives you at least something to verify."},
           {"h": "In the score", "b": "The bot gives a small edge to tokens that declare a description or whitepaper."},
           {"h": "But it is not enough", "b": "Anyone can write a text. Description and whitepaper are declared, not verified."},
           {"h": "Official links in plain sight", "b": "In the cards we show the declared website, channels and whitepaper so you can check them yourself."},
@@ -267,26 +267,26 @@
         "title": "Non ti chiederemo mai la seed phrase",
         "sub": "Come funziona la sicurezza del bot",
         "slides": [
-          {"h": "Nessun wallet collegato", "b": "Il bot non si collega al tuo wallet e non ha accesso ai tuoi fondi."},
+          {"h": "Nessun accesso ai fondi", "b": "Al massimo conosce l'indirizzo pubblico che scegli di indicare, in sola lettura."},
           {"h": "Nessuna operazione", "b": "Non compra, non vende, non firma e non invia transazioni. Mai."},
           {"h": "Seed phrase: mai", "b": "Nessuno serio ti chiede la seed phrase o la chiave privata. Se succede, è una truffa."},
           {"h": "Solo canali ufficiali", "b": "Diffida di messaggi privati e di falsi bot con nomi simili: usa solo il link in bio."},
-          {"h": "Solo chat private", "b": "Il bot risponde solo in chat privata e non ti scrive mai per primo con offerte."}
+          {"h": "Nessun messaggio a sorpresa", "b": "Il bot non ti scrive mai per primo con offerte: ricevi solo ciò che attivi tu."}
         ],
-        "caption": "Regola d'oro: nessun bot, nessun sito e nessun supporto legittimo ti chiederà mai la seed phrase o la chiave privata.\n\nSolana DEX Discovery non si collega ai wallet e non esegue operazioni. Usa solo il link in bio per evitare cloni.",
+        "caption": "Regola d'oro: nessun bot, nessun sito e nessun supporto legittimo ti chiederà mai la seed phrase o la chiave privata.\n\nSolana DEX Discovery non ha accesso ai tuoi fondi e non esegue operazioni. Usa solo il link in bio per evitare cloni.",
         "hashtags": ["#solana", "#crypto", "#truffe", "#sicurezzacrypto", "#seedphrase"]
       },
       "en": {
         "title": "We will never ask for your seed phrase",
         "sub": "How the bot's security works",
         "slides": [
-          {"h": "No wallet connected", "b": "The bot does not connect to your wallet and has no access to your funds."},
+          {"h": "No access to your funds", "b": "At most it knows the public address you choose to share, read-only."},
           {"h": "No operations", "b": "It does not buy, sell, sign or send transactions. Ever."},
           {"h": "Seed phrase: never", "b": "No legitimate service asks for your seed phrase or private key. If someone does, it is a scam."},
           {"h": "Official channels only", "b": "Beware of private messages and fake bots with similar names: use only the link in bio."},
-          {"h": "Private chats only", "b": "The bot only answers in private chat and never messages you first with offers."}
+          {"h": "No surprise messages", "b": "The bot never messages you first with offers: you only get what you turn on."}
         ],
-        "caption": "Golden rule: no bot, website or legitimate support will ever ask for your seed phrase or private key.\n\nSolana DEX Discovery does not connect to wallets and does not execute operations. Use only the link in bio to avoid clones.",
+        "caption": "Golden rule: no bot, website or legitimate support will ever ask for your seed phrase or private key.\n\nSolana DEX Discovery has no access to your funds and does not execute operations. Use only the link in bio to avoid clones.",
         "hashtags": ["#solana", "#crypto", "#scams", "#cryptosecurity", "#seedphrase"]
       }
     },
@@ -297,7 +297,7 @@
         "sub": "Scegli come usare il bot",
         "slides": [
           {"h": "Gratis", "b": "3 segnali al giorno in versione ridotta, con 20 minuti di ritardo. E 3 analisi su richiesta al giorno."},
-          {"h": "Premium", "b": "Il miglior segnale ogni 30 minuti in tempo reale, con l'analisi completa."},
+          {"h": "Premium", "b": "Il miglior segnale ogni 10 minuti in tempo reale, con l'analisi completa."},
           {"h": "In più con Premium", "b": "Report orario completo in file, soglia di punteggio personale e analisi su richiesta illimitate."},
           {"h": "Come si paga", "b": "Con Telegram Stars, rinnovo mensile che puoi disdire quando vuoi dalle impostazioni di Telegram."},
           {"h": "Nessun obbligo", "b": "Puoi usare la versione gratuita quanto vuoi. Premium è una scelta, non un requisito."}
@@ -310,7 +310,7 @@
         "sub": "Choose how to use the bot",
         "slides": [
           {"h": "Free", "b": "3 reduced signals a day, delayed by 20 minutes. Plus 3 on-demand analyses a day."},
-          {"h": "Premium", "b": "The best signal every 30 minutes in real time, with the full analysis."},
+          {"h": "Premium", "b": "The best signal every 10 minutes in real time, with the full analysis."},
           {"h": "More with Premium", "b": "Full hourly report file, a personal score threshold and unlimited on-demand analyses."},
           {"h": "How you pay", "b": "With Telegram Stars, monthly renewal you can cancel anytime from Telegram settings."},
           {"h": "No obligation", "b": "You can use the free version as long as you like. Premium is a choice, not a requirement."}
@@ -326,12 +326,12 @@
         "sub": "Da zero alla prima analisi",
         "slides": [
           {"h": "1. Apri Telegram dal link in bio", "b": "Premi Avvia: il bot si registra e ti parla nella tua lingua."},
-          {"h": "2. Incolla un indirizzo", "b": "Scrivi /analizza seguito dall'indirizzo di un token Solana."},
+          {"h": "2. Indica un token", "b": "Scrivi /analizza seguito dal simbolo o dall'indirizzo di un token Solana."},
           {"h": "3. Leggi la scheda", "b": "Sicurezza, holder, mercati, progetto e punteggio, in un solo messaggio."},
           {"h": "4. Attiva i segnali", "b": "Ricevi i token migliori in automatico. Con /segnali on e off decidi tu."},
           {"h": "5. Crea un alert di prezzo", "b": "Con /alert ti avvisa quando un token raggiunge il prezzo che scegli."}
         ],
-        "caption": "In 30 secondi puoi fare la tua prima analisi: apri il bot dal link in bio, scrivi /analizza e incolla l'indirizzo di un token.\n\nIl bot è in italiano e in inglese e puoi smettere quando vuoi con /stop, che cancella i tuoi dati.",
+        "caption": "In 30 secondi puoi fare la tua prima analisi: apri il bot dal link in bio, scrivi /analizza e il simbolo o l'indirizzo di un token.\n\nIl bot è in italiano e in inglese e puoi smettere quando vuoi con /stop, che cancella i tuoi dati.",
         "hashtags": ["#solana", "#crypto", "#telegram", "#defi", "#tutorial"]
       },
       "en": {
@@ -339,12 +339,12 @@
         "sub": "From zero to your first analysis",
         "slides": [
           {"h": "1. Open Telegram from the link in bio", "b": "Press Start: the bot registers you and speaks your language."},
-          {"h": "2. Paste an address", "b": "Type /analyze followed by a Solana token address."},
+          {"h": "2. Pick a token", "b": "Type /analyze followed by the symbol or address of a Solana token."},
           {"h": "3. Read the card", "b": "Security, holders, markets, project and score, in a single message."},
           {"h": "4. Turn on signals", "b": "Receive the best tokens automatically. /signals on and off is up to you."},
           {"h": "5. Set a price alert", "b": "With /alert it notifies you when a token reaches the price you choose."}
         ],
-        "caption": "In 30 seconds you can run your first analysis: open the bot from the link in bio, type /analyze and paste a token address.\n\nThe bot speaks Italian and English, and you can stop anytime with /stop, which deletes your data.",
+        "caption": "In 30 seconds you can run your first analysis: open the bot from the link in bio, type /analyze and the symbol or address of a token.\n\nThe bot speaks Italian and English, and you can stop anytime with /stop, which deletes your data.",
         "hashtags": ["#solana", "#crypto", "#telegram", "#defi", "#tutorial"]
       }
     }
