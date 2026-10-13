@@ -1,0 +1,38 @@
+# Crea post e storie con la mascotte e li mette online (GitHub Pages, gratis). Parte da solo a ogni modifica.
+name: Crea e pubblica i file multimediali
+on:
+  push:
+    branches: [main]
+    paths: ["content/**", "assets/**", "mkt/**", "config.toml", ".github/workflows/media.yml"]
+  workflow_dispatch: {}
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python -m mkt lint
+      - run: python -m mkt render
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

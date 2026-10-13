@@ -1,0 +1,34 @@
+# Pubblica da solo, nel cloud di GitHub (gratis): controlla ogni 30 minuti se c'è un contenuto (post e storia) da uscire.
+# Segreti da impostare in Settings > Secrets and variables > Actions: IG_USER_ID, IG_ACCESS_TOKEN, MEDIA_BASE_URL.
+name: Pubblica su Instagram
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: instagram-publish
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Pubblica il prossimo contenuto in scadenza
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          MEDIA_BASE_URL: ${{ secrets.MEDIA_BASE_URL }}
+        run: python -m mkt publish --live
+      - name: Salva calendario e stato
+        run: |
+          git config user.name "sdb-marketing"
+          git config user.email "actions@users.noreply.github.com"
+          git add state.json plan.json
+          git diff --cached --quiet || (git commit -m "Aggiorna stato pubblicazioni" && git push)

@@ -1,0 +1,352 @@
+{
+  "posts": [
+    {
+      "id": "p01-cos-e",
+      "it": {
+        "title": "Un analista per le nuove pool di Solana",
+        "sub": "Cos'è Solana DEX Discovery",
+        "slides": [
+          {"h": "Ogni minuto nascono nuovi token", "b": "Su Solana si creano centinaia di pool al giorno. Controllarle a mano è impossibile."},
+          {"h": "Il bot le scopre per te", "b": "Segue i principali DEX e analizza i token nuovi con dati on-chain e di mercato."},
+          {"h": "Controlla i rischi principali", "b": "Autorità del mint, concentrazione dei holder, liquidità e prova di vendita."},
+          {"h": "Un punteggio da 0 a 100", "b": "Riassume l'analisi in un numero chiaro, con tutte le ragioni a vista."},
+          {"h": "Solo informazione", "b": "Non compra, non vende, non tocca i tuoi fondi. Decidi sempre tu."}
+        ],
+        "caption": "Ogni giorno su Solana nascono centinaia di nuove pool. Solana DEX Discovery le scopre, le analizza e ti manda su Telegram i token più interessanti, con i rischi in chiaro.\n\nNon è un robot di trading: non compra, non vende e non gestisce fondi. È uno strumento di informazione.\n\nProvalo gratis: link in bio.",
+        "hashtags": ["#solana", "#crypto", "#defi", "#blockchain", "#telegram"]
+      },
+      "en": {
+        "title": "An analyst for new Solana pools",
+        "sub": "What Solana DEX Discovery is",
+        "slides": [
+          {"h": "New tokens appear every minute", "b": "Hundreds of pools are created on Solana every day. Checking them by hand is impossible."},
+          {"h": "The bot finds them for you", "b": "It follows the main DEXs and analyzes new tokens with on-chain and market data."},
+          {"h": "It checks the main risks", "b": "Mint authority, holder concentration, liquidity and a sell test."},
+          {"h": "A score from 0 to 100", "b": "The analysis in one clear number, with every reason in plain sight."},
+          {"h": "Information only", "b": "It does not buy, sell or touch your funds. You always decide."}
+        ],
+        "caption": "Hundreds of new pools are created on Solana every day. Solana DEX Discovery finds them, analyzes them and sends the most interesting tokens to you on Telegram, with the risks in plain sight.\n\nIt is not a trading bot: it does not buy, sell or manage funds. It is an information tool.\n\nTry it for free: link in bio.",
+        "hashtags": ["#solana", "#crypto", "#defi", "#blockchain", "#telegram"]
+      }
+    },
+    {
+      "id": "p02-allarmi",
+      "it": {
+        "title": "5 segnali di allarme in un token nuovo",
+        "sub": "Prima di guardare il grafico, guarda questi",
+        "slides": [
+          {"h": "1. Il creatore può stampare altri token", "b": "Con la mint authority attiva l'offerta può crescere a piacere e il prezzo crollare."},
+          {"h": "2. Il creatore può congelare i conti", "b": "La freeze authority permette di bloccare i token nel tuo wallet."},
+          {"h": "3. Pochi wallet hanno quasi tutto", "b": "Se i primi 10 holder detengono una quota enorme, bastano poche vendite per far crollare il prezzo."},
+          {"h": "4. Liquidità sottile o non bloccata", "b": "Poca liquidità significa prezzi instabili. Se non è bloccata può essere ritirata."},
+          {"h": "5. Vendere non è possibile", "b": "Alcuni token si comprano ma non si rivendono. Una prova di vendita lo verifica."}
+        ],
+        "caption": "5 segnali che Solana DEX Discovery controlla per ogni token nuovo: mint authority, freeze authority, concentrazione dei holder, liquidità e vendibilità.\n\nNessun controllo garantisce che un token sia sicuro, ma conoscere i segnali di allarme aiuta a non partire alla cieca.\n\nSalva il post per averlo sempre a portata di mano.",
+        "hashtags": ["#solana", "#crypto", "#rugpull", "#defi", "#educazionefinanziaria"]
+      },
+      "en": {
+        "title": "5 red flags in a new token",
+        "sub": "Before you look at the chart, look at these",
+        "slides": [
+          {"h": "1. The creator can mint more tokens", "b": "With the mint authority active the supply can grow at will and the price collapse."},
+          {"h": "2. The creator can freeze accounts", "b": "The freeze authority can lock the tokens in your wallet."},
+          {"h": "3. A few wallets hold almost everything", "b": "If the top 10 holders own a huge share, a few sales can crash the price."},
+          {"h": "4. Thin or unlocked liquidity", "b": "Little liquidity means unstable prices. If it is not locked it can be withdrawn."},
+          {"h": "5. Selling is not possible", "b": "Some tokens can be bought but not sold back. A sell test checks it."}
+        ],
+        "caption": "5 red flags Solana DEX Discovery checks for every new token: mint authority, freeze authority, holder concentration, liquidity and sellability.\n\nNo check can guarantee that a token is safe, but knowing the red flags helps you avoid going in blind.\n\nSave this post to keep it handy.",
+        "hashtags": ["#solana", "#crypto", "#rugpull", "#defi", "#cryptoeducation"]
+      }
+    },
+    {
+      "id": "p03-mint",
+      "it": {
+        "title": "Mint authority: perché conta",
+        "sub": "La prima cosa da controllare",
+        "slides": [
+          {"h": "Cos'è", "b": "È il permesso di creare nuovi token di quel tipo. Chi lo possiede può aumentare l'offerta."},
+          {"h": "Perché è un rischio", "b": "Più token in circolazione a parità di domanda significano un valore per token più basso."},
+          {"h": "Cosa cercare", "b": "Un token con mint authority revocata non può essere stampato oltre l'offerta esistente."},
+          {"h": "Attenzione", "b": "Revocata non vuol dire sicuro: restano holder, liquidità e altri rischi da valutare."},
+          {"h": "Il bot lo fa per te", "b": "Se la mint authority è attiva, il token viene escluso dai segnali."}
+        ],
+        "caption": "La mint authority è il primo controllo che facciamo su ogni token nuovo. Se è attiva, il creatore può stampare altri token quando vuole.\n\nRevocarla è un buon segno, ma non basta da sola: per questo l'analisi guarda molto altro.\n\nSegui per altre guide sui rischi dei token.",
+        "hashtags": ["#solana", "#crypto", "#defi", "#blockchain", "#sicurezzacrypto"]
+      },
+      "en": {
+        "title": "Mint authority: why it matters",
+        "sub": "The first thing to check",
+        "slides": [
+          {"h": "What it is", "b": "It is the permission to create new tokens of that kind. Whoever holds it can increase the supply."},
+          {"h": "Why it is a risk", "b": "More tokens in circulation for the same demand means a lower value per token."},
+          {"h": "What to look for", "b": "A token with a revoked mint authority cannot be minted beyond the existing supply."},
+          {"h": "Careful", "b": "Revoked does not mean safe: holders, liquidity and other risks still need to be assessed."},
+          {"h": "The bot does it for you", "b": "If the mint authority is active, the token is excluded from the signals."}
+        ],
+        "caption": "Mint authority is the first check we run on every new token. If it is active, the creator can mint more tokens whenever they want.\n\nRevoking it is a good sign, but it is not enough on its own: that is why the analysis looks at much more.\n\nFollow for more guides on token risks.",
+        "hashtags": ["#solana", "#crypto", "#defi", "#blockchain", "#cryptosecurity"]
+      }
+    },
+    {
+      "id": "p04-holder",
+      "it": {
+        "title": "Chi possiede davvero il token?",
+        "sub": "La concentrazione dei holder",
+        "slides": [
+          {"h": "Il numero che conta", "b": "Quanta parte dell'offerta è nei primi 10 wallet? Più è alta, più il prezzo dipende da pochi."},
+          {"h": "Non tutti sono holder veri", "b": "Le pool di liquidità, i contratti dei DEX e gli indirizzi di burn non sono persone: vanno esclusi dal conto."},
+          {"h": "Il nostro metodo", "b": "Il bot esclude questi indirizzi e calcola la concentrazione solo sui wallet reali."},
+          {"h": "Un solo wallet dominante", "b": "Se un singolo wallet detiene una quota molto alta, il rischio di vendita improvvisa è maggiore."},
+          {"h": "Dato mancante = prudenza", "b": "Se non riusciamo a leggere i holder, lo segnaliamo: mai trattato come sicuro."}
+        ],
+        "caption": "Guardare solo il prezzo non basta: conta anche chi possiede il token. Il bot calcola la concentrazione dei primi holder escludendo pool, contratti e indirizzi di burn.\n\nSe un dato manca, lo diciamo chiaramente invece di far finta che vada tutto bene.",
+        "hashtags": ["#solana", "#crypto", "#holder", "#onchain", "#defi"]
+      },
+      "en": {
+        "title": "Who really owns the token?",
+        "sub": "Holder concentration",
+        "slides": [
+          {"h": "The number that matters", "b": "How much of the supply sits in the top 10 wallets? The higher it is, the more the price depends on a few."},
+          {"h": "Not every holder is real", "b": "Liquidity pools, DEX contracts and burn addresses are not people: they must be excluded."},
+          {"h": "Our method", "b": "The bot excludes these addresses and computes concentration only on real wallets."},
+          {"h": "One dominant wallet", "b": "If a single wallet holds a very large share, the risk of a sudden sale is higher."},
+          {"h": "Missing data = caution", "b": "If we cannot read the holders, we say so: it is never treated as safe."}
+        ],
+        "caption": "The price alone is not enough: who owns the token matters too. The bot computes the concentration of the top holders, excluding pools, contracts and burn addresses.\n\nIf a data point is missing, we say so instead of pretending everything is fine.",
+        "hashtags": ["#solana", "#crypto", "#holders", "#onchain", "#defi"]
+      }
+    },
+    {
+      "id": "p05-liquidita",
+      "it": {
+        "title": "Liquidità: cosa significa davvero",
+        "sub": "Perché un numero alto non basta",
+        "slides": [
+          {"h": "Cos'è", "b": "È il denaro presente nella pool: determina quanto il prezzo si muove quando qualcuno compra o vende."},
+          {"h": "Poca liquidità = prezzi nervosi", "b": "Con pochi dollari in pool anche un acquisto piccolo sposta molto il prezzo."},
+          {"h": "Attenzione ai numeri gonfiati", "b": "Alcune pool mostrano liquidità virtuale: serve guardare anche l'attività reale degli scambi."},
+          {"h": "Chi può ritirarla?", "b": "Se la liquidità non è bloccata, il creatore può rimuoverla e il token diventa invendibile."},
+          {"h": "Il nostro filtro", "b": "Il bot scarta le pool sotto soglia e quelle senza abbastanza transazioni reali."}
+        ],
+        "caption": "La liquidità non è solo un numero: conta quanta è reale, quanta è bloccata e quanto si scambia davvero.\n\nIl bot applica soglie minime di liquidità e attività prima ancora di fare un'analisi completa.",
+        "hashtags": ["#solana", "#crypto", "#liquidity", "#defi", "#educazionefinanziaria"]
+      },
+      "en": {
+        "title": "Liquidity: what it really means",
+        "sub": "Why a big number is not enough",
+        "slides": [
+          {"h": "What it is", "b": "It is the money in the pool: it decides how much the price moves when someone buys or sells."},
+          {"h": "Thin liquidity = jumpy prices", "b": "With only a few dollars in the pool, even a small purchase moves the price a lot."},
+          {"h": "Beware of inflated numbers", "b": "Some pools show virtual liquidity: you also need to look at real trading activity."},
+          {"h": "Who can withdraw it?", "b": "If liquidity is not locked, the creator can remove it and the token becomes unsellable."},
+          {"h": "Our filter", "b": "The bot discards pools below the threshold and those without enough real transactions."}
+        ],
+        "caption": "Liquidity is not just a number: what matters is how much is real, how much is locked and how much actually trades.\n\nThe bot applies minimum liquidity and activity thresholds before even running a full analysis.",
+        "hashtags": ["#solana", "#crypto", "#liquidity", "#defi", "#cryptoeducation"]
+      }
+    },
+    {
+      "id": "p06-vendita",
+      "it": {
+        "title": "Si può rivendere? La prova di vendita",
+        "sub": "Senza spendere un centesimo",
+        "slides": [
+          {"h": "Il trucco dei token invendibili", "b": "Alcuni token si possono comprare ma non rivendere. Se non lo scopri prima, resti bloccato."},
+          {"h": "Come lo verifichiamo", "b": "Chiediamo a Jupiter una quotazione di vendita verso USDC per un importo di prova."},
+          {"h": "Nessuna transazione", "b": "È solo una richiesta di prezzo: il bot non firma e non invia nulla."},
+          {"h": "Se la rotta non c'è", "b": "Senza una rotta di vendita o con un impatto sul prezzo eccessivo, il token non passa il filtro."},
+          {"h": "Limiti onesti", "b": "Una quotazione riuscita non garantisce che la vendita funzioni in futuro."}
+        ],
+        "caption": "La prova di vendita è una quotazione, non un'operazione: il bot non compra e non vende mai nulla.\n\nServe a scartare i token che sembrano non rivendibili. Non è una garanzia, ma è un controllo in più.",
+        "hashtags": ["#solana", "#jupiter", "#crypto", "#defi", "#honeypot"]
+      },
+      "en": {
+        "title": "Can you sell it? The sell test",
+        "sub": "Without spending a cent",
+        "slides": [
+          {"h": "The unsellable token trick", "b": "Some tokens can be bought but not sold back. If you do not find out first, you are stuck."},
+          {"h": "How we check it", "b": "We ask Jupiter for a sell quote to USDC for a test amount."},
+          {"h": "No transaction", "b": "It is only a price request: the bot signs nothing and sends nothing."},
+          {"h": "If there is no route", "b": "Without a sell route, or with excessive price impact, the token fails the filter."},
+          {"h": "Honest limits", "b": "A successful quote does not guarantee that selling will work in the future."}
+        ],
+        "caption": "The sell test is a quote, not a trade: the bot never buys or sells anything.\n\nIt helps discard tokens that look unsellable. It is not a guarantee, but it is one more check.",
+        "hashtags": ["#solana", "#jupiter", "#crypto", "#defi", "#honeypot"]
+      }
+    },
+    {
+      "id": "p07-attesa",
+      "it": {
+        "title": "Perché non segnaliamo subito",
+        "sub": "Il confronto continuo",
+        "slides": [
+          {"h": "I primi minuti ingannano", "b": "Subito dopo la nascita di una pool i dati sono confusi e molti token spariscono in fretta."},
+          {"h": "Aspettiamo qualche minuto", "b": "L'analisi parte dopo circa 20 minuti, quando i dati sono più chiari ma il token è ancora giovane."},
+          {"h": "I migliori vengono messi da parte", "b": "I token con un buon punteggio entrano in una lista di osservazione."},
+          {"h": "Confronto continuo", "b": "Ogni nuovo arrivato viene confrontato con quelli già in lista: restano solo i migliori."},
+          {"h": "Esce solo il migliore", "b": "Prima di ogni segnale il token viene analizzato di nuovo con dati aggiornati."}
+        ],
+        "caption": "Meno segnali, più qualità: il bot non pubblica la prima pool che trova. Mette da parte i migliori, li confronta con i nuovi e rianalizza il candidato prima di ogni segnale.\n\nÈ il nostro modo per ridurre il rumore.",
+        "hashtags": ["#solana", "#crypto", "#defi", "#analisi", "#telegram"]
+      },
+      "en": {
+        "title": "Why we do not signal right away",
+        "sub": "Continuous comparison",
+        "slides": [
+          {"h": "The first minutes are misleading", "b": "Right after a pool is born the data is noisy and many tokens vanish quickly."},
+          {"h": "We wait a few minutes", "b": "Analysis starts after about 20 minutes, when data is clearer but the token is still young."},
+          {"h": "The best are set aside", "b": "Tokens with a good score enter a watchlist."},
+          {"h": "Continuous comparison", "b": "Every newcomer is compared with those already on the list: only the best stay."},
+          {"h": "Only the best goes out", "b": "Before each signal the token is analyzed again with fresh data."}
+        ],
+        "caption": "Fewer signals, more quality: the bot does not publish the first pool it finds. It sets the best aside, compares them with newcomers and re-analyzes the candidate before every signal.\n\nIt is our way of cutting the noise.",
+        "hashtags": ["#solana", "#crypto", "#defi", "#analysis", "#telegram"]
+      }
+    },
+    {
+      "id": "p08-punteggio",
+      "it": {
+        "title": "Come leggere il punteggio 0–100",
+        "sub": "Non è una previsione",
+        "slides": [
+          {"h": "Cosa misura", "b": "Combina liquidità, attività, pressione d'acquisto, holder, sicurezza e dati sul progetto."},
+          {"h": "I veti vengono prima", "b": "Se c'è un rischio grave, come la mint authority attiva, il segnale viene escluso a prescindere dal punteggio."},
+          {"h": "Pesi trasparenti", "b": "La configurazione del punteggio è fissa e versionata: sai sempre come è stato calcolato."},
+          {"h": "Cosa NON è", "b": "Non prevede il prezzo futuro e non indica quando comprare o vendere."},
+          {"h": "Come usarlo", "b": "Come un filtro per decidere dove guardare meglio, poi fai le tue verifiche."}
+        ],
+        "caption": "Il punteggio da 0 a 100 è un riassunto dell'analisi, non una previsione. I rischi gravi hanno sempre la precedenza sul punteggio.\n\nUsalo per capire dove guardare meglio, poi fai sempre le tue verifiche.",
+        "hashtags": ["#solana", "#crypto", "#defi", "#analisi", "#educazionefinanziaria"]
+      },
+      "en": {
+        "title": "How to read the 0–100 score",
+        "sub": "It is not a prediction",
+        "slides": [
+          {"h": "What it measures", "b": "It combines liquidity, activity, buying pressure, holders, safety and project data."},
+          {"h": "Vetoes come first", "b": "If there is a serious risk, such as an active mint authority, the signal is excluded regardless of the score."},
+          {"h": "Transparent weights", "b": "The scoring configuration is fixed and versioned: you always know how it was computed."},
+          {"h": "What it is NOT", "b": "It does not predict future prices and does not tell you when to buy or sell."},
+          {"h": "How to use it", "b": "As a filter to decide where to look closer, then do your own checks."}
+        ],
+        "caption": "The 0 to 100 score summarizes the analysis, it is not a prediction. Serious risks always take priority over the score.\n\nUse it to see where to look closer, then always do your own checks.",
+        "hashtags": ["#solana", "#crypto", "#defi", "#analysis", "#cryptoeducation"]
+      }
+    },
+    {
+      "id": "p09-progetto",
+      "it": {
+        "title": "Descrizione e whitepaper: contano?",
+        "sub": "Il progetto dietro il token",
+        "slides": [
+          {"h": "Chi spiega cosa fa, si espone", "b": "Un progetto che dichiara descrizione e whitepaper dà almeno qualcosa da verificare."},
+          {"h": "Nel punteggio", "b": "Il bot dà un piccolo vantaggio ai token che dichiarano descrizione o whitepaper."},
+          {"h": "Ma non basta", "b": "Chiunque può scrivere un testo. Descrizione e whitepaper sono dichiarati, non verificati."},
+          {"h": "Link ufficiali in chiaro", "b": "Nelle schede mostriamo sito, canali e whitepaper dichiarati, così li controlli da solo."},
+          {"h": "Prudenza sui link", "b": "Verifica sempre l'indirizzo prima di aprire un link o collegare un wallet."}
+        ],
+        "caption": "Descrizione e whitepaper non rendono un token sicuro, ma un progetto che si presenta è più facile da valutare di uno anonimo.\n\nNelle schede del bot trovi i link dichiarati dal progetto, sempre da verificare.",
+        "hashtags": ["#solana", "#crypto", "#whitepaper", "#defi", "#sicurezzacrypto"]
+      },
+      "en": {
+        "title": "Description and whitepaper: do they matter?",
+        "sub": "The project behind the token",
+        "slides": [
+          {"h": "Explaining what you do exposes you", "b": "A project that declares a description and whitepaper gives you at least something to verify."},
+          {"h": "In the score", "b": "The bot gives a small edge to tokens that declare a description or whitepaper."},
+          {"h": "But it is not enough", "b": "Anyone can write a text. Description and whitepaper are declared, not verified."},
+          {"h": "Official links in plain sight", "b": "In the cards we show the declared website, channels and whitepaper so you can check them yourself."},
+          {"h": "Be careful with links", "b": "Always verify the address before opening a link or connecting a wallet."}
+        ],
+        "caption": "A description and whitepaper do not make a token safe, but a project that presents itself is easier to assess than an anonymous one.\n\nIn the bot cards you find the links declared by the project, always to be verified.",
+        "hashtags": ["#solana", "#crypto", "#whitepaper", "#defi", "#cryptosecurity"]
+      }
+    },
+    {
+      "id": "p10-nessun-wallet",
+      "it": {
+        "title": "Non ti chiederemo mai la seed phrase",
+        "sub": "Come funziona la sicurezza del bot",
+        "slides": [
+          {"h": "Nessun wallet collegato", "b": "Il bot non si collega al tuo wallet e non ha accesso ai tuoi fondi."},
+          {"h": "Nessuna operazione", "b": "Non compra, non vende, non firma e non invia transazioni. Mai."},
+          {"h": "Seed phrase: mai", "b": "Nessuno serio ti chiede la seed phrase o la chiave privata. Se succede, è una truffa."},
+          {"h": "Solo canali ufficiali", "b": "Diffida di messaggi privati e di falsi bot con nomi simili: usa solo il link in bio."},
+          {"h": "Solo chat private", "b": "Il bot risponde solo in chat privata e non ti scrive mai per primo con offerte."}
+        ],
+        "caption": "Regola d'oro: nessun bot, nessun sito e nessun supporto legittimo ti chiederà mai la seed phrase o la chiave privata.\n\nSolana DEX Discovery non si collega ai wallet e non esegue operazioni. Usa solo il link in bio per evitare cloni.",
+        "hashtags": ["#solana", "#crypto", "#truffe", "#sicurezzacrypto", "#seedphrase"]
+      },
+      "en": {
+        "title": "We will never ask for your seed phrase",
+        "sub": "How the bot's security works",
+        "slides": [
+          {"h": "No wallet connected", "b": "The bot does not connect to your wallet and has no access to your funds."},
+          {"h": "No operations", "b": "It does not buy, sell, sign or send transactions. Ever."},
+          {"h": "Seed phrase: never", "b": "No legitimate service asks for your seed phrase or private key. If someone does, it is a scam."},
+          {"h": "Official channels only", "b": "Beware of private messages and fake bots with similar names: use only the link in bio."},
+          {"h": "Private chats only", "b": "The bot only answers in private chat and never messages you first with offers."}
+        ],
+        "caption": "Golden rule: no bot, website or legitimate support will ever ask for your seed phrase or private key.\n\nSolana DEX Discovery does not connect to wallets and does not execute operations. Use only the link in bio to avoid clones.",
+        "hashtags": ["#solana", "#crypto", "#scams", "#cryptosecurity", "#seedphrase"]
+      }
+    },
+    {
+      "id": "p11-free-premium",
+      "it": {
+        "title": "Gratis o Premium: cosa cambia",
+        "sub": "Scegli come usare il bot",
+        "slides": [
+          {"h": "Gratis", "b": "3 segnali al giorno in versione ridotta, con 20 minuti di ritardo. E 3 analisi su richiesta al giorno."},
+          {"h": "Premium", "b": "Il miglior segnale ogni 30 minuti in tempo reale, con l'analisi completa."},
+          {"h": "In più con Premium", "b": "Report orario completo in file, soglia di punteggio personale e analisi su richiesta illimitate."},
+          {"h": "Come si paga", "b": "Con Telegram Stars, rinnovo mensile che puoi disdire quando vuoi dalle impostazioni di Telegram."},
+          {"h": "Nessun obbligo", "b": "Puoi usare la versione gratuita quanto vuoi. Premium è una scelta, non un requisito."}
+        ],
+        "caption": "La versione gratuita ti permette di provare il bot senza impegno. Premium è per chi vuole i segnali in tempo reale e l'analisi completa.\n\nI segnali sono informazione, non consigli finanziari. Dettagli e termini direttamente nel bot: link in bio.",
+        "hashtags": ["#solana", "#crypto", "#telegram", "#defi", "#bot"]
+      },
+      "en": {
+        "title": "Free or Premium: what changes",
+        "sub": "Choose how to use the bot",
+        "slides": [
+          {"h": "Free", "b": "3 reduced signals a day, delayed by 20 minutes. Plus 3 on-demand analyses a day."},
+          {"h": "Premium", "b": "The best signal every 30 minutes in real time, with the full analysis."},
+          {"h": "More with Premium", "b": "Full hourly report file, a personal score threshold and unlimited on-demand analyses."},
+          {"h": "How you pay", "b": "With Telegram Stars, monthly renewal you can cancel anytime from Telegram settings."},
+          {"h": "No obligation", "b": "You can use the free version as long as you like. Premium is a choice, not a requirement."}
+        ],
+        "caption": "The free version lets you try the bot with no commitment. Premium is for those who want real-time signals and the full analysis.\n\nSignals are information, not financial advice. Details and terms in the bot itself: link in bio.",
+        "hashtags": ["#solana", "#crypto", "#telegram", "#defi", "#bot"]
+      }
+    },
+    {
+      "id": "p12-provalo",
+      "it": {
+        "title": "Provalo in 30 secondi",
+        "sub": "Da zero alla prima analisi",
+        "slides": [
+          {"h": "1. Apri Telegram dal link in bio", "b": "Premi Avvia: il bot si registra e ti parla nella tua lingua."},
+          {"h": "2. Incolla un indirizzo", "b": "Scrivi /analizza seguito dall'indirizzo di un token Solana."},
+          {"h": "3. Leggi la scheda", "b": "Sicurezza, holder, mercati, progetto e punteggio, in un solo messaggio."},
+          {"h": "4. Attiva i segnali", "b": "Ricevi i token migliori in automatico. Con /segnali on e off decidi tu."},
+          {"h": "5. Crea un alert di prezzo", "b": "Con /alert ti avvisa quando un token raggiunge il prezzo che scegli."}
+        ],
+        "caption": "In 30 secondi puoi fare la tua prima analisi: apri il bot dal link in bio, scrivi /analizza e incolla l'indirizzo di un token.\n\nIl bot è in italiano e in inglese e puoi smettere quando vuoi con /stop, che cancella i tuoi dati.",
+        "hashtags": ["#solana", "#crypto", "#telegram", "#defi", "#tutorial"]
+      },
+      "en": {
+        "title": "Try it in 30 seconds",
+        "sub": "From zero to your first analysis",
+        "slides": [
+          {"h": "1. Open Telegram from the link in bio", "b": "Press Start: the bot registers you and speaks your language."},
+          {"h": "2. Paste an address", "b": "Type /analyze followed by a Solana token address."},
+          {"h": "3. Read the card", "b": "Security, holders, markets, project and score, in a single message."},
+          {"h": "4. Turn on signals", "b": "Receive the best tokens automatically. /signals on and off is up to you."},
+          {"h": "5. Set a price alert", "b": "With /alert it notifies you when a token reaches the price you choose."}
+        ],
+        "caption": "In 30 seconds you can run your first analysis: open the bot from the link in bio, type /analyze and paste a token address.\n\nThe bot speaks Italian and English, and you can stop anytime with /stop, which deletes your data.",
+        "hashtags": ["#solana", "#crypto", "#telegram", "#defi", "#tutorial"]
+      }
+    }
+  ]
+}

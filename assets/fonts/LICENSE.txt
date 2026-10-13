@@ -1,0 +1,2 @@
+Inter font family, Copyright (c) The Inter Project Authors (https://github.com/rsms/inter).
+Licensed under the SIL Open Font License, Version 1.1 (https://openfontlicense.org).
