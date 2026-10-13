@@ -1,5 +1,5 @@
-# Pubblica da solo, nel cloud di GitHub (gratis): controlla ogni 30 minuti se c'è un contenuto (post e storia) da uscire.
-# Segreti da impostare in Settings > Secrets and variables > Actions: IG_USER_ID, IG_ACCESS_TOKEN, MEDIA_BASE_URL.
+# Pubblica da solo, nel cloud di GitHub (gratis): ogni 30 minuti controlla se c'è un contenuto (post o storia) da pubblicare.
+# Segreti in Settings > Secrets and variables > Actions. Senza token non fa nulla (e non dà errore).
 name: Pubblica su Instagram
 on:
   schedule:
@@ -12,8 +12,8 @@ concurrency:
   cancel-in-progress: false
 jobs:
   publish:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,10 +25,13 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           MEDIA_BASE_URL: ${{ secrets.MEDIA_BASE_URL }}
-        run: python -m mkt publish --live
+        run: |
+          if [ -z "$IG_ACCESS_TOKEN" ]; then echo "Configurazione incompleta: manca il segreto IG_ACCESS_TOKEN. Nessuna azione."; exit 0; fi
+          python -m mkt publish --live
       - name: Salva calendario e stato
+        if: always()
         run: |
           git config user.name "sdb-marketing"
           git config user.email "actions@users.noreply.github.com"
-          git add state.json plan.json
-          git diff --cached --quiet || (git commit -m "Aggiorna stato pubblicazioni" && git push)
+          for f in plan.json state.json; do if [ -f "$f" ]; then git add "$f"; fi; done
+          git diff --cached --quiet || (git commit -m "Aggiorna calendario e stato" && git push)
