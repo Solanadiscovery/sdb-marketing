@@ -218,3 +218,147 @@ def test_no_forbidden_capabilities_in_marketing_code():
     src = " ".join(p.read_text(encoding="utf-8") for p in Path(ROOT / "mkt").glob("*.py")).lower()
     for word in ("shell=true", "os.system", "private_key", "seed_phrase", "verify=false", "sendtransaction"):
         assert word not in src
+
+
+IG_TOKEN = "IGAAT-secret-token-456"
+
+
+def test_instagram_login_token_uses_instagram_host_and_finds_account_id():
+    seen = []
+
+    def handler(r):
+        seen.append(str(r.url))
+        if r.url.path.endswith("/me"):
+            return httpx.Response(200, json={"data": [{"user_id": "17841400", "username": "sdb"}]})
+        return httpx.Response(200, json={"data": [{"quota_usage": 1, "config": {"quota_total": 100}}]})
+
+    ig = Instagram(client(handler), "", IG_TOKEN, "v23.0", sleep=lambda _: None)
+    assert ig.instagram_login and ig.account() == ("17841400", "sdb") and ig.quota_used() == (1, 100)
+    assert all(u.startswith("https://graph.instagram.com/v23.0/") for u in seen)
+    assert "/17841400/content_publishing_limit" in seen[-1]
+    flat = Instagram(client(lambda r: httpx.Response(200, json={"user_id": "9", "username": "x"})), "", IG_TOKEN)
+    assert flat.account() == ("9", "x")
+    fb = Instagram(client(handler), "123", TOKEN)
+    assert not fb.instagram_login and fb.root.startswith("https://graph.facebook.com/")
+
+
+def test_token_refresh_calls_official_endpoint():
+    calls = []
+
+    def handler(r):
+        calls.append(r)
+        return httpx.Response(200, json={"access_token": IG_TOKEN, "token_type": "bearer", "expires_in": 5183944})
+
+    ig = Instagram(client(handler), "1", IG_TOKEN)
+    assert ig.refresh_token() == (IG_TOKEN, 5183944)
+    assert calls[0].url.path == "/refresh_access_token" and calls[0].url.params["grant_type"] == "ig_refresh_token"
+    with pytest.raises(InstagramError):
+        Instagram(client(handler), "1", TOKEN).refresh_token()  # i token della Pagina non si rinnovano così
+
+
+class FakeIG:
+    def __init__(self, token, new=None):
+        self.token, self.instagram_login, self.new, self.calls = token, True, new, 0
+
+    def refresh_token(self):
+        self.calls += 1
+        return (self.new or self.token), 5184000
+
+
+def test_token_is_renewed_weekly_and_expiry_is_flagged():
+    now, state, ig = datetime(2026, 10, 20, 12, tzinfo=UTC), {}, FakeIG(IG_TOKEN)
+    assert cli.maintain_token(ig, state, now) == [] and ig.calls == 0  # token appena visto: niente rinnovo
+    assert IG_TOKEN not in json.dumps(state)  # il token non viene mai salvato (lo stato è pubblico)
+    assert cli.maintain_token(ig, state, now + timedelta(days=7)) == [] and ig.calls == 1
+    assert state["_token"]["expires"].startswith("2026-12-26")  # 60 giorni dal rinnovo
+    assert cli.maintain_token(ig, state, now + timedelta(days=8)) == [] and ig.calls == 1  # una volta a settimana
+    other = FakeIG(IG_TOKEN, new="IGAA-diverso")
+    assert "token diverso" in cli.maintain_token(other, state, now + timedelta(days=15))[0]
+    late = {"_token": {"fp": cli.fingerprint(IG_TOKEN), "seen": now.isoformat(), "refreshed": now.isoformat(),
+                       "expires": (now + timedelta(days=3)).isoformat()}}
+    assert "scade il 23/10/2026" in cli.maintain_token(FakeIG(IG_TOKEN), late, now)[0]
+
+
+def test_problems_alert_at_most_once_a_day():
+    now, state = datetime(2026, 10, 20, tzinfo=UTC), {}
+    assert cli.notify(state, ["x"], now) == 1
+    assert cli.notify(state, ["x"], now + timedelta(hours=1)) == 0
+    assert cli.notify(state, ["y"], now + timedelta(hours=2)) == 1
+    assert cli.notify(state, ["y"], now + timedelta(hours=27)) == 1
+    assert cli.notify(state, [], now + timedelta(hours=28)) == 0 and "_alert" not in state
+
+
+def test_media_address_defaults_to_github_pages(monkeypatch):
+    monkeypatch.delenv("MEDIA_BASE_URL", raising=False)
+    monkeypatch.setenv("GITHUB_REPOSITORY", "Solanadiscovery/sdb-marketing")
+    assert cli.media_base() == "https://solanadiscovery.github.io/sdb-marketing"
+    monkeypatch.setenv("MEDIA_BASE_URL", "https://cdn.example/x/")
+    assert cli.media_base() == "https://cdn.example/x"
+
+
+def test_live_publish_without_token_does_nothing(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cli, "PLAN", tmp_path / "plan.json")
+    monkeypatch.setattr(cli, "STATE", tmp_path / "state.json")
+    monkeypatch.delenv("IG_ACCESS_TOKEN", raising=False)
+    monkeypatch.setattr(httpx, "Client", lambda *a, **k: pytest.fail("senza token non si usa la rete"))
+    assert cli.main(["publish", "--live"]) == 0
+    assert "Configurazione incompleta" in capsys.readouterr().out
+    assert not (tmp_path / "plan.json").exists() and not (tmp_path / "state.json").exists()
+
+
+def fake_meta(ok=True):
+    calls = []
+
+    def handler(r):
+        calls.append((r.method, r.url.path))
+        if not ok:
+            return httpx.Response(400, json={"error": {"message": "permesso mancante", "code": 10}})
+        if r.method == "HEAD":
+            return httpx.Response(200, headers={"content-type": "image/jpeg"})
+        if r.url.path.endswith("/me"):
+            return httpx.Response(200, json={"data": [{"user_id": "178", "username": "sdb"}]})
+        if r.url.path.endswith("/content_publishing_limit"):
+            return httpx.Response(200, json={"data": [{"quota_usage": 0, "config": {"quota_total": 100}}]})
+        if r.url.path.endswith("/media"):
+            return httpx.Response(200, json={"id": "c1"})
+        return httpx.Response(200, json={"status_code": "FINISHED"})
+
+    return calls, handler
+
+
+@pytest.fixture
+def live_env(tmp_path, monkeypatch):
+    monkeypatch.setattr(cli, "PLAN", tmp_path / "plan.json")
+    monkeypatch.setattr(cli, "STATE", tmp_path / "state.json")
+    monkeypatch.setenv("IG_ACCESS_TOKEN", IG_TOKEN)
+    monkeypatch.delenv("IG_USER_ID", raising=False)
+    monkeypatch.setenv("MEDIA_BASE_URL", "https://media.example")
+    real = httpx.Client
+
+    def use(handler):
+        monkeypatch.setattr(cli.httpx, "Client", lambda *a, **k: real(transport=httpx.MockTransport(handler)))
+
+    return tmp_path, use
+
+
+def test_first_live_run_verifies_without_publishing_then_creates_plan(live_env, capsys):
+    tmp, use = live_env
+    calls, handler = fake_meta()
+    use(handler)
+    assert cli.main(["publish", "--live"]) == 0
+    out = capsys.readouterr().out
+    assert "verifica riuscita" in out and "@sdb" in out and (tmp / "plan.json").exists()
+    assert ("POST", "/v23.0/178/media") in calls  # prova di pubblicazione con un contenitore...
+    assert not any(p.endswith("/media_publish") for _, p in calls)  # ...ma nulla viene pubblicato
+    saved = (tmp / "state.json").read_text()
+    assert IG_TOKEN not in saved and "_token" in saved
+
+
+def test_broken_configuration_alerts_once_and_never_starts_the_calendar(live_env):
+    tmp, use = live_env
+    _, handler = fake_meta(ok=False)
+    use(handler)
+    assert cli.main(["publish", "--live"]) == 1  # job fallito = email di avviso
+    assert cli.main(["publish", "--live"]) == 0  # stesso problema entro 24 ore: nessuna seconda email
+    assert not (tmp / "plan.json").exists()  # il calendario parte solo quando tutto funziona
+    assert IG_TOKEN not in (tmp / "state.json").read_text()
