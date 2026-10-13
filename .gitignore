@@ -1,0 +1,10 @@
+.env
+out/
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+calendario_*.md
+ads_plan.md
+publish.log
