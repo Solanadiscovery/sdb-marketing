@@ -206,7 +206,7 @@ def test_cli_publish_dry_run_posts_nothing(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(httpx, "Client", lambda *a, **k: pytest.fail("la simulazione non deve usare la rete"))
     assert cli.main(["publish"]) == 0
     out = capsys.readouterr().out
-    assert "[simulazione]" in out and "story" in out and DISCLAIMER["it"] in out
+    assert "[simulazione]" in out and "story" in out and any(d in out for d in DISCLAIMER.values())
     assert not (tmp_path / "state.json").exists()
     first = load_posts(POSTS, "it")[0]
     assert cli.image_urls("https://m/out/", first)[0] == "https://m/out/it/p01-cos-e/01.jpg"

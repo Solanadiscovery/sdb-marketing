@@ -1,5 +1,5 @@
 # Campagna Instagram di Solana DEX Discovery. Non tocca il VPS né il bot Telegram.
-language = "it"                 # "it" o "en": lingua dei post di questo profilo
+language = "en"                 # "it" o "en": lingua dei post di questo profilo
 timezone = "Europe/Rome"
 post_days = ["mon", "wed", "fri"]   # giorni di pubblicazione
 post_time = "18:30"             # ora locale del carosello nel feed
